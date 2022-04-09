@@ -336,15 +336,15 @@ views:
             type: grid
             cards:
               - type: custom:mushroom-person-card
-                entity: person.sam_barillaro
+                entity: person.one
                 layout: horizontal
                 icon: mdi:face-man-outline
                 hide_name: false
-                name: Sam
+                name: One
               - type: custom:mushroom-person-card
-                entity: person.katie_barillaro
+                entity: person.two
                 icon: mdi:face-woman-outline
-                name: Katie
+                name: Two
           - type: custom:mushroom-title-card
             title: Rooms
           - square: false
