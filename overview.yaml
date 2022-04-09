@@ -1,0 +1,717 @@
+views:
+  - theme: Mushroom
+    title: Overview
+    path: overview
+    icon: mdi:view-dashboard-outline
+    badges: []
+    cards:
+      - square: false
+        columns: 1
+        type: grid
+        cards:
+          - type: custom:mushroom-title-card
+            title: Overview
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: weather
+                entity: weather.hornsby
+                show_conditions: true
+                show_temperature: true
+                tap_action:
+                  action: navigate
+                  navigation_path: climate
+              - type: entity
+                entity: sensor.living_temperature
+                icon: mdi:sofa-outline
+                tap_action:
+                  action: navigate
+                  navigation_path: climate
+              - type: entity
+                entity: sensor.bedrooms_temperature
+                icon: mdi:bed-king-outline
+                tap_action:
+                  action: navigate
+                  navigation_path: climate
+          - square: false
+            columns: 4
+            type: grid
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: group.somebody_home
+                    state: home
+                  - entity: group.all_doors
+                    state: 'on'
+                  - entity: input_boolean.holiday_mode
+                    state: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Home
+                  secondary: |-
+                    {% if is_state('vacuum.deebot_neo', 'docked') %}
+                    {% if is_state('group.all_doors', 'on') %}
+                    open
+                    {% else %}
+                    closed
+                    {% endif %}
+                    {% else %}
+                    {{ states("vacuum.deebot_neo") }}
+                    {% endif %}
+                  icon: mdi:home-lock-open
+                  layout: vertical
+                  icon_color: green
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: false
+              - type: conditional
+                conditions:
+                  - entity: group.somebody_home
+                    state: home
+                  - entity: group.all_doors
+                    state: 'off'
+                  - entity: input_boolean.holiday_mode
+                    state: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Home
+                  secondary: |-
+                    {% if is_state('vacuum.deebot_neo', 'docked') %}
+                    {% if is_state('group.all_doors', 'on') %}
+                    open
+                    {% else %}
+                    closed
+                    {% endif %}
+                    {% else %}
+                    {{ states("vacuum.deebot_neo") }}
+                    {% endif %}
+                  icon: mdi:home-lock
+                  layout: vertical
+                  icon_color: green
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: false
+              - type: conditional
+                conditions:
+                  - entity: group.somebody_home
+                    state_not: home
+                  - entity: group.all_doors
+                    state: 'on'
+                  - entity: input_boolean.holiday_mode
+                    state: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Home
+                  icon: mdi:home-lock-open
+                  layout: vertical
+                  icon_color: red
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  secondary: |-
+                    {% if is_state('vacuum.deebot_neo', 'docked') %}
+                    {% if is_state('group.all_doors', 'on') %}
+                    open
+                    {% else %}
+                    closed
+                    {% endif %}
+                    {% else %}
+                    {{ states("vacuum.deebot_neo") }}
+                    {% endif %}
+              - type: conditional
+                conditions:
+                  - entity: group.somebody_home
+                    state_not: home
+                  - entity: group.all_doors
+                    state: 'off'
+                  - entity: input_boolean.holiday_mode
+                    state: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Home
+                  icon: mdi:home-lock
+                  layout: vertical
+                  icon_color: red
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  secondary: |-
+                    {% if is_state('vacuum.deebot_neo', 'docked') %}
+                    {% if is_state('group.all_doors', 'on') %}
+                    open
+                    {% else %}
+                    closed
+                    {% endif %}
+                    {% else %}
+                    {{ states("vacuum.deebot_neo") }}
+                    {% endif %}
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.holiday_mode
+                    state: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Home
+                  secondary: |-
+                    {% if is_state('vacuum.deebot_neo', 'docked') %}
+                    {% if is_state('group.all_doors', 'on') %}
+                    open
+                    {% else %}
+                    closed
+                    {% endif %}
+                    {% else %}
+                    {{ states("vacuum.deebot_neo") }}
+                    {% endif %}
+                  icon: mdi:emoticon-cool-outline
+                  layout: vertical
+                  icon_color: teal
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: false
+              - type: conditional
+                conditions:
+                  - entity: sensor.number_of_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Lights
+                  secondary: '{{ states("sensor.number_of_lights_on") }}'
+                  icon: mdi:lightbulb-on-outline
+                  layout: vertical
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: lights
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  entity: sensor.number_of_lights_on
+              - type: conditional
+                conditions:
+                  - entity: sensor.number_of_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Lights
+                  secondary: |-
+                    {% if is_state('sensor.number_of_lights_on', '0') %}
+                                  off
+                                {% else %}
+                                  {{ states("sensor.number_of_lights_on") }}
+                                {% endif %}
+                  icon: mdi:lightbulb-outline
+                  layout: vertical
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: lights
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  entity: sensor.number_of_lights_on
+              - type: conditional
+                conditions:
+                  - entity: climate.daikin_ac
+                    state: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Climate
+                  secondary: '{{ states("sensor.indoor_temperature") }}°C'
+                  icon: mdi:home-thermometer-outline
+                  layout: vertical
+                  tap_action:
+                    action: navigate
+                    navigation_path: climate
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  icon_color: purple
+              - type: conditional
+                conditions:
+                  - entity: climate.daikin_ac
+                    state: cool
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Climate
+                  secondary: >-
+                    {{ state_attr('climate.daikin_ac', 'temperature')|round(0)
+                    }}°C  |  {{ states("climate.daikin_ac") }}
+                  icon: mdi:home-thermometer-outline
+                  layout: vertical
+                  icon_color: blue
+                  tap_action:
+                    action: navigate
+                    navigation_path: climate
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: true
+              - type: conditional
+                conditions:
+                  - entity: climate.daikin_ac
+                    state: heat
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Climate
+                  secondary: >-
+                    {{ state_attr('climate.daikin_ac', 'temperature')|round(0)
+                    }}°C  |  {{ states("climate.daikin_ac") }}
+                  icon: mdi:home-thermometer-outline
+                  layout: vertical
+                  icon_color: deep-orange
+                  tap_action:
+                    action: navigate
+                    navigation_path: climate
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: true
+              - type: conditional
+                conditions:
+                  - entity: climate.daikin_ac
+                    state_not: cool
+                  - entity: climate.daikin_ac
+                    state_not: heat
+                  - entity: climate.daikin_ac
+                    state_not: 'off'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Climate
+                  secondary: >-
+                    {{ state_attr('climate.daikin_ac', 'temperature')|round(0)
+                    }}°C  |  {{ states("climate.daikin_ac") }}
+                  icon: mdi:home-thermometer-outline
+                  layout: vertical
+                  icon_color: lime
+                  tap_action:
+                    action: navigate
+                    navigation_path: climate
+                  hold_action:
+                    action: more-info
+                  double_tap_action:
+                    action: none
+                  multiline_secondary: true
+              - type: custom:mushroom-template-card
+                primary: System
+                secondary: '{{ states("sensor.memory_use_percent") }}%'
+                icon: mdi:home-analytics
+                layout: vertical
+                tap_action:
+                  action: navigate
+                  navigation_path: system
+                hold_action:
+                  action: more-info
+                double_tap_action:
+                  action: none
+                icon_color: blue-grey
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: custom:mushroom-person-card
+                entity: person.sam_barillaro
+                layout: horizontal
+                icon: mdi:face-man-outline
+                hide_name: false
+                name: Sam
+              - type: custom:mushroom-person-card
+                entity: person.katie_barillaro
+                icon: mdi:face-woman-outline
+                name: Katie
+          - type: custom:mushroom-title-card
+            title: Rooms
+          - square: false
+            columns: 2
+            type: grid
+            cards:
+              - type: conditional
+                conditions:
+                  - entity: sensor.living_area_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Living Area
+                  secondary: >-
+                    {{ states("sensor.living_area_temperature") }}°C  |  TV {{
+                    states("remote.harmony_hub") }}
+                  layout: vertical
+                  icon: mdi:sofa-outline
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: living
+              - type: conditional
+                conditions:
+                  - entity: sensor.living_area_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Living Area
+                  secondary: >-
+                    {{ states("sensor.living_area_temperature") }}°C  |  TV {{
+                    states("remote.harmony_hub") }}
+                  layout: vertical
+                  icon: mdi:sofa-outline
+                  multiline_secondary: true
+                  tap_action:
+                    action: navigate
+                    navigation_path: living
+                  icon_color: amber
+              - type: conditional
+                conditions:
+                  - entity: sensor.kitchen_dining_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Kitchen & Dining
+                  secondary: >-
+                    {{ states("sensor.dining_temperature") }}°C  |  Sliding door
+                    {% if is_state('binary_sensor.sliding_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:silverware
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: kitchen
+              - type: conditional
+                conditions:
+                  - entity: sensor.kitchen_dining_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Kitchen & Dining
+                  secondary: >-
+                    {{ states("sensor.dining_temperature") }}°C  |  Sliding door
+                    {% if is_state('binary_sensor.sliding_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:silverware
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: kitchen
+              - type: conditional
+                conditions:
+                  - entity: sensor.alfresco_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Alfresco
+                  secondary: >-
+                    {{ states("sensor.hue_outdoor_motion_sensor_temperature")
+                    }}°C  |  Door {% if
+                    is_state('binary_sensor.alfresco_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:grill-outline
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: alfresco
+              - type: conditional
+                conditions:
+                  - entity: sensor.alfresco_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Alfresco
+                  secondary: >-
+                    {{ states("sensor.hue_outdoor_motion_sensor_temperature")
+                    }}°C  |  Door {% if
+                    is_state('binary_sensor.alfresco_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:grill-outline
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: alfresco
+              - type: conditional
+                conditions:
+                  - entity: sensor.bathroom_lights_on
+                    state: '0'
+                  - entity: switch.bathroom_heated_towel_rail_switch
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Bathroom
+                  secondary: >-
+                    Towel rail {{
+                    states("switch.bathroom_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: bathroom
+              - type: conditional
+                conditions:
+                  - entity: sensor.bathroom_lights_on
+                    state_not: '0'
+                  - entity: switch.bathroom_heated_towel_rail_switch
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Bathroom
+                  secondary: >-
+                    Towel rail {{
+                    states("switch.bathroom_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: bathroom
+              - type: conditional
+                conditions:
+                  - entity: switch.bathroom_heated_towel_rail_switch
+                    state: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Bathroom
+                  secondary: >-
+                    Towel rail {{
+                    states("switch.bathroom_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower
+                  multiline_secondary: true
+                  tap_action:
+                    action: navigate
+                    navigation_path: bathroom
+                  icon_color: red
+              - type: conditional
+                conditions:
+                  - entity: sensor.bedroom_only_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Bedroom
+                  secondary: '{{ states("sensor.bedroom_temperature") }}°C'
+                  layout: vertical
+                  icon: mdi:bed-king-outline
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: bedroom
+              - type: conditional
+                conditions:
+                  - entity: sensor.bedroom_only_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Bedroom
+                  secondary: '{{ states("sensor.bedroom_temperature") }}°C'
+                  layout: vertical
+                  icon: mdi:bed-king-outline
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: bedroom
+              - type: conditional
+                conditions:
+                  - entity: sensor.ensuite_lights_on
+                    state: '0'
+                  - entity: switch.ensuite_heated_towel_rail_switch
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Ensuite
+                  secondary: >-
+                    Towel Rail {{
+                    states("switch.ensuite_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower-head
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: lights
+              - type: conditional
+                conditions:
+                  - entity: sensor.ensuite_lights_on
+                    state_not: '0'
+                  - entity: switch.ensuite_heated_towel_rail_switch
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Ensuite
+                  secondary: >-
+                    Towel rail {{
+                    states("switch.ensuite_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower-head
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: lights
+              - type: conditional
+                conditions:
+                  - entity: switch.ensuite_heated_towel_rail_switch
+                    state: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Ensuite
+                  secondary: >-
+                    Towel rail {{
+                    states("switch.ensuite_heated_towel_rail_switch") }}
+                  layout: vertical
+                  icon: mdi:shower-head
+                  multiline_secondary: true
+                  tap_action:
+                    action: navigate
+                    navigation_path: lights
+                  icon_color: red
+              - type: conditional
+                conditions:
+                  - entity: light.kids_lamp
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Kids Room
+                  secondary: '{{ states("sensor.kids_temperature") }}°C'
+                  layout: vertical
+                  icon: mdi:bunk-bed-outline
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: kids
+              - type: conditional
+                conditions:
+                  - entity: light.kids_lamp
+                    state: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Kids Room
+                  secondary: '{{ states("sensor.kids_temperature") }}°C'
+                  layout: vertical
+                  icon: mdi:bunk-bed-outline
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: kids
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.meeting
+                    state_not: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Study
+                  secondary: >-
+                    {{ states("sensor.study_temperature") }}°C{% if
+                    is_state('input_boolean.meeting', 'on') %}  |  On a call
+                                {% else %}
+                                 
+                                {% endif %}
+                  layout: vertical
+                  icon: mdi:chair-rolling
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: study
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.meeting
+                    state: 'on'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Study
+                  secondary: >-
+                    {{ states("sensor.study_temperature") }}°C{% if
+                    is_state('input_boolean.meeting', 'on') %}  |  On a call
+                                {% else %}
+                                 
+                                {% endif %}
+                  layout: vertical
+                  icon: mdi:chair-rolling
+                  multiline_secondary: true
+                  icon_color: red
+                  tap_action:
+                    action: navigate
+                    navigation_path: study
+              - type: custom:mushroom-template-card
+                primary: Spare Room
+                secondary: '{{ states("sensor.spare_room_temperature") }}°C'
+                layout: vertical
+                icon: mdi:wardrobe-outline
+                multiline_secondary: true
+                icon_color: grey
+                tap_action:
+                  action: navigate
+                  navigation_path: spare-room
+              - type: conditional
+                conditions:
+                  - entity: sensor.rest_of_lights_on
+                    state: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Rest of house
+                  secondary: >-
+                    {{ states("sensor.indoor_temperature") }}°C  |  Front door
+                    {% if is_state('binary_sensor.front_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:home-outline
+                  multiline_secondary: true
+                  icon_color: grey
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
+              - type: conditional
+                conditions:
+                  - entity: sensor.rest_of_lights_on
+                    state_not: '0'
+                card:
+                  type: custom:mushroom-template-card
+                  primary: Rest of house
+                  secondary: >-
+                    {{ states("sensor.indoor_temperature") }}°C  |  Front door
+                    {% if is_state('binary_sensor.front_door_sensor_ias_zone',
+                    'on') %}open{% else %}closed{% endif %}
+                  layout: vertical
+                  icon: mdi:home-outline
+                  multiline_secondary: true
+                  icon_color: amber
+                  tap_action:
+                    action: navigate
+                    navigation_path: home
